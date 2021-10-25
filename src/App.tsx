@@ -1,26 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useContext } from 'react';
+import { Component } from './components/Component/Component';
+import { ThemeProvider } from 'styled-components';
+import { GlobalStyle } from './styles/GlobalStyle';
+import { lightTheme, darkTheme } from './theme/Theme';
+import { ColorModeContext, ColorModeProvider } from './context/ColorMode.context';
+import { ColorModeSwitch } from './components/ColorModeSwitch/ColorModeSwitch';
 
-function App() {
+export function Master() {
+  const { isDarkTheme } = useContext(ColorModeContext);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
+      <GlobalStyle />
+      <ColorModeSwitch />
+      <Component text="Boilerplate ReactJS + Styled Components">
+        <p>Eric Frank Li</p>
+      </Component>
+    </ThemeProvider>
   );
 }
 
-export default App;
+export function App() {
+  return (
+    <ColorModeProvider>
+      <Master />
+    </ColorModeProvider>
+  );
+}
